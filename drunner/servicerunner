@@ -23,6 +23,16 @@ SYNOPSIS
 EOF
 }
 
+# function confignetwork {
+#    echo "Configuring network autoproxy."
+#    docker network create --driver bridge autoproxy
+# }
+#
+# function testnetwork {
+#    docker network ls | grep -q autoproxy || confignetwork
+#    docker network ls | grep -q autoproxy || die "Failed to configure network"
+# }
+
 #------------------------------------------------------------------------------------
 # The main function. We can add any commands we'd like here!
 
@@ -38,6 +48,14 @@ function main {
             showhelp
             ;;
 
+         install_end)
+            #testnetwork
+            ;;
+
+         # testnet)
+         #    testnetwork
+         #    ;;
+
          enter)
             docker exec -it ${PROXYCONTAINERNAME} /bin/bash
             ;;
@@ -47,6 +65,8 @@ function main {
                --name ${PROXYCONTAINERNAME} \
                -v /var/run/docker.sock:/tmp/docker.sock:ro \
                jwilder/nginx-proxy
+
+            #--net autoproxy \
             ;;
 
          stop)
